@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'cloud-security/Azure/01-cloud-native-soc/infrastructure/**'
+
 
 jobs:
   deploy-bicep:
