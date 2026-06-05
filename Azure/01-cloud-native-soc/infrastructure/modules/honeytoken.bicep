@@ -5,7 +5,7 @@ param location string
 param workspaceId string
 
 // Dynamic generated name of our keyVault
-var keyVaultName = 'kv-GlobalAdmin-${uniqueString(resourceGroup().id)}'
+var keyVaultName = 'kv-GAdmin-${uniqueString(resourceGroup().id)}'
 
 // 1. KayVault
 resource honeyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
