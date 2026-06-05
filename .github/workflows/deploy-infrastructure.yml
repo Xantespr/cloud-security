@@ -23,5 +23,5 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: 'rg-sc500-nauka'
-          template: ./cloud-security/Azure/01-cloud-native-soc/infrastructure/main.bicep
+          template: ./Azure/01-cloud-native-soc/infrastructure/main.bicep
           failOnStdErr: false
