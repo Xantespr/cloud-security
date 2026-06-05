@@ -4,14 +4,14 @@ param location string = resourceGroup().location
 @description('Environment prefix (e.g., dev, prod)')
 param env string = 'dev'
 
-// uniqueString tworzy zawsze taki sam, krótki hash dla tej konkretnej grupy zasobów.
+// uniqueString always the same short hash for a resource group.
 var uniqueSuffix = uniqueString(resourceGroup().id)
 
 // Łączymy przedrostek, środowisko i unikalny hash
 var generatedWorkspaceName = 'law-${env}-${uniqueSuffix}'
 
 // 1. Deploy SOC Core Infrastructure (LAW, Sentinel)
-module socCore 'core.bicep' = {
+module socCore 'modules/core.bicep'= {
   name: 'deploy-soc-core'
   params: {
     location: location
@@ -20,7 +20,7 @@ module socCore 'core.bicep' = {
 }
 
 // 2. Deploy Honeytoken
-module honeytoken 'honeytoken.bicep' = {
+module honeytoken 'modules/honeytoken.bicep'= {
   name: 'deploy-honeytoken'
   params: {
     location: location
