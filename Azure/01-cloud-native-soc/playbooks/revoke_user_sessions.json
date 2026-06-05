@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "playbookName": {
+      "type": "string",
+      "defaultValue": "soar-mfa-fatigue-revoke-sessions"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "[parameters('playbookName')]",
+      "location": "swedencentral",
+      "properties": {
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "triggers": {
+            "Microsoft_Sentinel_Incident": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": { "connection": { "name": "@parameters('$connections')['nosql']['connectionId']" } },
+                "path": "/incident-trigger"
+              }
+            }
+          },
+          "actions": {
+            "Revoke_SignIn_Sessions": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": { "connection": { "name": "@parameters('$connections')['azuread']['connectionId']" } },
+                "path": "/users/[account_id]/revokeSignInSessions"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
