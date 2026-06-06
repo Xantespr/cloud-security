@@ -49,7 +49,7 @@ module operationalKV 'modules/keyvault.bicep' = {
 }
 
 resource kv 'Microsoft.KeyVault/vaults@2025-05-01' existing = {
-  name: operationalKV.name
+  name: keyVaultName
 }
 
 // 5. Deploy sql database
