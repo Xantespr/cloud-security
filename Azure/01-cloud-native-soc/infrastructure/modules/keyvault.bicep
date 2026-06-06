@@ -4,10 +4,8 @@ param location string
 @description('Full Resource ID of the Log Analytics Workspace')
 param workspaceId string
 
-@description('Environment prefix (e.g., dev, prod)')
-param env string
-
-var keyVaultName = 'kv-op-${env}-${uniqueString(resourceGroup().id)}'
+@description('Name for the Key Vault defined by the user')
+param keyVaultName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2025-05-01' = {
   name: keyVaultName
