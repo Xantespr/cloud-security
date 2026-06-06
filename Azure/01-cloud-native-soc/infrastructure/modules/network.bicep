@@ -30,6 +30,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' = {
         name: 'subnet-frontend'
         properties: {
           addressPrefix: '10.0.10.0/24'
+          delegations: [
+            {
+              name: 'delegation-appservice'
+              properties: {
+                serviceName: 'Microsoft.Web/serverFarms'
+              }
+            }
+          ]
           networkSecurityGroup: {
             id: networkSecurityGroup.id
           }
