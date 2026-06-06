@@ -59,5 +59,18 @@ module sql 'modules/sql.bicep' = {
     location: location
     env: env
     adminPassword: kv.getSecret('sqlAdminPassword')
+    logAnalyticsWorkspaceId: socCore.outputs.workspaceId
+  }
+}
+
+// 6. Deploy public app service
+module appService 'modules/appservice.bicep' = {
+  name: 'deploy-appservice'
+  params: {
+    location: location
+    env: env
+    frontendSubnetId: network.outputs.frontendSubnetId // Dynamic dependency
+    webAppName: 'appsvc-soc-${env}-${uniqueSuffix}'
+    logAnalyticsWorkspaceId: socCore.outputs.workspaceId
   }
 }

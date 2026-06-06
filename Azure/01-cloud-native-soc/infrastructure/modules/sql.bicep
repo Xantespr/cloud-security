@@ -1,8 +1,11 @@
 @description('Deployment location for all resources')
 param location string
 
-@description('Unique suffix for resource naming to avoid collisions')
+@description('Environment prefix from main (e.g., dev, prod)')
 param env string
+
+@description('Log Analytics Workspace ID for Sentinel integration, passed from main')
+param logAnalyticsWorkspaceId string
 
 @secure()
 @description('Admin password for SQL Server - stored as a secret in Key Vault')
@@ -35,4 +38,33 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2025-01-01' = {
       tier: 'Basic'
       capacity: 5
     }
+}
+
+// 3. Configure Diagnostic Settings to send SQL logs to Log Analytics
+resource sqlServerAuditing 'Microsoft.Sql/servers/auditingSettings@2025-01-01' = {
+  name: 'default'
+  parent: sqlServer
+  properties: {
+    state: 'Enabled'
+    isAzureMonitorTargetEnabled: true
+  }
+}
+
+resource masterDb 'Microsoft.Sql/servers/databases@2025-01-01' existing = {
+  parent: sqlServer
+  name: 'master'
+}
+
+resource sqlDiagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: 'sql-to-law'
+  scope: masterDb
+  properties: {
+    workspaceId: logAnalyticsWorkspaceId
+    logs: [
+      {
+        category: 'SQLSecurityAuditEvents'
+        enabled: true
+      }
+    ]
+  }
 }
