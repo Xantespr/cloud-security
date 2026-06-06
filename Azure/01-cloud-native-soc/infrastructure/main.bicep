@@ -1,21 +1,19 @@
 @description('Location for all resources - inherited from Resource Group')
 param location string = resourceGroup().location
 
-@description('Environment prefix (e.g., dev, prod)')
-param env string = 'dev'
-
-// uniqueString always the same short hash for a resource group.
+@description('uniqueString always the same short hash for a resource group.')
 var uniqueSuffix = uniqueString(resourceGroup().id)
 
-// Łączymy przedrostek, środowisko i unikalny hash
-var generatedWorkspaceName = 'law-${env}-${uniqueSuffix}'
+@description('Environment prefix (e.g., dev, prod)')
+param env string = 'dev'
 
 // 1. Deploy SOC Core Infrastructure (LAW, Sentinel)
 module socCore 'modules/core.bicep'= {
   name: 'deploy-soc-core'
   params: {
     location: location
-    workspaceName: generatedWorkspaceName
+    env: env
+    lawSuffix: uniqueSuffix
   }
 }
 
@@ -25,5 +23,14 @@ module honeytoken 'modules/honeytoken.bicep'= {
   params: {
     location: location
     workspaceId: socCore.outputs.workspaceId // Dynamic dependency
+  }
+}
+
+// 3. Deploy Network
+module network 'modules/network.bicep' = {
+  name: 'deploy-network'
+  params: {
+    location: location
+    env: env
   }
 }

@@ -1,12 +1,18 @@
 @description('Deployment location inherited from the main orchestrator')
 param location string
 
-@description('Name of the Log Analytics Workspace for SOC logs')
-param workspaceName string
+@description('Unique suffix for resource naming to avoid collisions')
+param lawSuffix string
+
+@description('Environment prefix (e.g., dev, prod) inherited from main')
+param env string
+
+@description('dynamic name for our Log Analytics Workspace - combining prefix, env, and unique hash')
+var generatedWorkspaceName = 'law-${env}-${lawSuffix}'
 
 // 1. Deploy Log Analytics Workspace
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
-  name: workspaceName
+  name: generatedWorkspaceName
   location: location
   properties: {
     sku: {
