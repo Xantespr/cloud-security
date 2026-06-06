@@ -11,7 +11,7 @@ param env string
 var generatedWorkspaceName = 'law-${env}-${lawSuffix}'
 
 // 1. Deploy Log Analytics Workspace
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-07-01' = {
   name: generatedWorkspaceName
   location: location
   properties: {
@@ -23,7 +23,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09
 }
 
 // 2. Onboard Microsoft Sentinel on top of the Workspace
-resource sentinelOnboarding 'Microsoft.SecurityInsights/onboardingStates@2023-02-01' = {
+resource sentinelOnboarding 'Microsoft.SecurityInsights/onboardingStates@2025-09-01' = {
   scope: logAnalyticsWorkspace
   name: 'default'
 }

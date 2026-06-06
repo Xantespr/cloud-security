@@ -18,7 +18,7 @@ module socCore 'modules/core.bicep'= {
 }
 
 // 2. Deploy Honeytoken
-module honeytoken 'modules/honeytoken.bicep'= {
+module honeytoken 'modules/keyvaultHoney.bicep'= {
   name: 'deploy-honeytoken'
   params: {
     location: location
@@ -29,6 +29,15 @@ module honeytoken 'modules/honeytoken.bicep'= {
 // 3. Deploy Network
 module network 'modules/network.bicep' = {
   name: 'deploy-network'
+  params: {
+    location: location
+    env: env
+  }
+}
+
+// 4. Deploy operational keyVault for ops
+module operationalKV 'modules/keyvault.bicep' = {
+  name: 'deploy-operational-keyvault'
   params: {
     location: location
     env: env
