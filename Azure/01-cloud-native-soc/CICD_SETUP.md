@@ -47,6 +47,7 @@ your-root-repository/
 ## Step 4: Register resource providers in Azure
 Subscriptions -> your subscription -> Settings -> Resource providers -> Register:
 - KeyVault
+- Microsoft.AlertsManagement
 
 ## Step 5: Create keyVault
 1. Azure -> keyVaults -> create -> name: 'kv-op-<Environment-prefix-(e.g.,dev,prod)>-<anything>' -> use your resource group (must be the same as in "C:\GitRepo\cloud-security\.github\workflows\deploy-infrastructure.yml") -> click Access control (IAM) -> Add yourself a role assignment -> `Key Vault Secrets Officer` ->  add secret with name 'sqlAdminPassword' and generated password (min length 20)
