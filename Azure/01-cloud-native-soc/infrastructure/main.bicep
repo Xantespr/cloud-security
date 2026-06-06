@@ -41,5 +41,6 @@ module operationalKV 'modules/keyvault.bicep' = {
   params: {
     location: location
     env: env
+    workspaceId: socCore.outputs.workspaceId // Dynamic dependency for diagnostics
   }
 }
