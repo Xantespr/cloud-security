@@ -30,6 +30,11 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' = {
         name: 'subnet-frontend'
         properties: {
           addressPrefix: '10.0.10.0/24'
+          serviceEndpoints: [
+            {
+              service: 'Microsoft.Sql'
+            }
+          ]
           delegations: [
             {
               name: 'delegation-appservice'

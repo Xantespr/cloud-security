@@ -60,6 +60,7 @@ module sql 'modules/sql.bicep' = {
     env: env
     adminPassword: kv.getSecret('sqlAdminPassword')
     logAnalyticsWorkspaceId: socCore.outputs.workspaceId
+    frontendSubnetId: network.outputs.frontendSubnetId
   }
 }
 

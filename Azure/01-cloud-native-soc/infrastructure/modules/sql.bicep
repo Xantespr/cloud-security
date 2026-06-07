@@ -7,6 +7,9 @@ param env string
 @description('Log Analytics Workspace ID for Sentinel integration, passed from main')
 param logAnalyticsWorkspaceId string
 
+@description('Frontend subnet ID for SQL Server VNet integration, passed from network module output')
+param frontendSubnetId string
+
 @secure()
 @description('Admin password for SQL Server - stored as a secret in Key Vault')
 param adminPassword string
@@ -66,5 +69,15 @@ resource sqlDiagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview
         enabled: true
       }
     ]
+  }
+}
+
+// 4. Create VNet Rule to allow traffic from frontend subnet
+resource  sqlVnetRule 'Microsoft.Sql/servers/virtualNetworkRules@2025-01-01' = {
+  name: 'allow-frontend-subnet'
+  parent: sqlServer
+  properties: {
+    virtualNetworkSubnetId: frontendSubnetId
+    ignoreMissingVnetServiceEndpoint: true
   }
 }
