@@ -26,7 +26,7 @@ resource sqlServer 'Microsoft.Sql/servers@2025-01-01' = {
     administratorLogin: 'sqladmin'
     administratorLoginPassword: adminPassword
     version: '12.0'
-    publicNetworkAccess: 'Disabled'
+    publicNetworkAccess: 'Enabled'
     restrictOutboundNetworkAccess: 'Disabled'
   }
 }
